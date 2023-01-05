@@ -1,5 +1,5 @@
 import { useInstances } from '.';
-import { Text, Bounds, Html, useBounds } from '@react-three/drei';
+import { Text, Bounds, useBounds } from '@react-three/drei';
 import { useMemo } from 'react';
 
 const rows = 15;
