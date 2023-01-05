@@ -32,7 +32,7 @@ export const ShowAll = (props: JSX.IntrinsicElements['group']) => {
 
   return (
     <group {...props}>
-      <Bounds fit clip observe margin={2}>
+      <Bounds fit clip observe margin={3}>
         <SelectToZoom>
           {Keys.map((key, i) => {
             const rows = 15;

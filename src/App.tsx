@@ -18,7 +18,7 @@ export default function Viewer() {
         />
         <hemisphereLight
           color="white"
-          groundColor="#ff0f00"
+          groundColor="white"
           position={[-7, 25, 13]}
           intensity={1}
         />
