@@ -1,11 +1,15 @@
 import { useInstances } from '.';
-import { Bounds, useBounds } from '@react-three/drei';
+import { Text, Bounds, Html, useBounds } from '@react-three/drei';
+import { useMemo } from 'react';
 
-function SelectToZoom({ children }) {
+const rows = 15;
+const offSet = 5.5;
+
+const SelectToZoom = ({ children }) => {
   const api = useBounds();
   const ZoomTo = (e) => {
     e.stopPropagation();
-    console.log(e.object);
+    console.log(e.object.name);
     e.delta <= 2 && api.refresh(e.object).fit();
   };
   const Deselect = (e) => {
@@ -16,27 +20,39 @@ function SelectToZoom({ children }) {
       {children}
     </group>
   );
-}
-
-const rows = 15;
-const columns = 15;
-const offSet = 5.5;
+};
 
 export const ShowAll = (props: JSX.IntrinsicElements['group']) => {
   const ALL = useInstances();
   const Keys = Object.keys(ALL);
 
+  const AllInstances = useMemo(
+    () =>
+      Keys.map((key, i) => {
+        const X = (i % rows) * offSet;
+        const Y = Math.floor(i / rows) * offSet;
+        const Model = ALL[key];
+        return (
+          <Model name={key} key={key} position={[X, Y, 0]}>
+            <Text
+              color="white"
+              anchorX="center"
+              anchorY="middle"
+              scale={0.35}
+              position-y={-1}
+            >
+              {key}
+            </Text>
+          </Model>
+        );
+      }),
+    [ALL]
+  );
+
   return (
     <group {...props}>
       <Bounds fit clip observe margin={3}>
-        <SelectToZoom>
-          {Keys.map((key, i) => {
-            const X = (i % rows) * offSet;
-            const Y = Math.floor(i / columns) * offSet;
-            const Model = ALL[key];
-            return <Model name={key} position={[X, Y, 0]} />;
-          })}
-        </SelectToZoom>
+        <SelectToZoom>{AllInstances}</SelectToZoom>
       </Bounds>
     </group>
   );

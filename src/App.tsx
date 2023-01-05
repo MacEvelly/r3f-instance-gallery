@@ -26,11 +26,7 @@ export default function Viewer() {
           <ShowAll />
         </Instances>
       </Suspense>
-      <OrbitControls
-        makeDefault
-        // minPolarAngle={0}
-        // maxPolarAngle={Math.PI / 1.75}
-      />
+      <OrbitControls makeDefault />
     </Canvas>
   );
 }
