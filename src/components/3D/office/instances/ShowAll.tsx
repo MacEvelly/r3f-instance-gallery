@@ -1,30 +1,26 @@
 import { useInstances } from '.';
-import {
-  Bounds,
-  useBounds,
-  BBAnchor,
-  Html,
-  OrbitControls,
-  ContactShadows,
-  useGLTF,
-} from '@react-three/drei';
+import { Bounds, useBounds } from '@react-three/drei';
 
 function SelectToZoom({ children }) {
   const api = useBounds();
-  const toME = (e) => {
+  const ZoomTo = (e) => {
     e.stopPropagation();
     console.log(e.object);
     e.delta <= 2 && api.refresh(e.object).fit();
   };
-  const clickedOff = (e) => {
+  const Deselect = (e) => {
     e.button === 0 && api.refresh().fit();
   };
   return (
-    <group onClick={toME} onPointerMissed={clickedOff}>
+    <group onClick={ZoomTo} onPointerMissed={Deselect}>
       {children}
     </group>
   );
 }
+
+const rows = 15;
+const columns = 15;
+const offSet = 5.5;
 
 export const ShowAll = (props: JSX.IntrinsicElements['group']) => {
   const ALL = useInstances();
@@ -35,9 +31,6 @@ export const ShowAll = (props: JSX.IntrinsicElements['group']) => {
       <Bounds fit clip observe margin={3}>
         <SelectToZoom>
           {Keys.map((key, i) => {
-            const rows = 15;
-            const columns = 15;
-            const offSet = 10;
             const X = (i % rows) * offSet;
             const Y = Math.floor(i / columns) * offSet;
             const Model = ALL[key];
