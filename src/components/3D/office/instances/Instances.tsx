@@ -8,7 +8,7 @@ import { useGLTF, Merged } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { OfficeLibrary } from '../../../../assets/';
 
-type GLTFResult = GLTF & {
+export type GLTFResult = GLTF & {
   nodes: {
     Book_01: THREE.Mesh;
     Book_02: THREE.Mesh;
