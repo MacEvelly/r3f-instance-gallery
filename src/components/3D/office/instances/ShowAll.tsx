@@ -22,6 +22,22 @@ const SelectToZoom = ({ children }) => {
   );
 };
 
+const ZoomItem = ({ Model, name, ...props }) => {
+  return (
+    <Model {...props}>
+      <Text
+        color="white"
+        anchorX="center"
+        anchorY="middle"
+        scale={0.35}
+        position-y={-1}
+      >
+        {name}
+      </Text>
+    </Model>
+  );
+};
+
 export const ShowAll = (props: JSX.IntrinsicElements['group']) => {
   const ALL = useInstances();
   const Keys = Object.keys(ALL);
@@ -33,17 +49,12 @@ export const ShowAll = (props: JSX.IntrinsicElements['group']) => {
         const Y = Math.floor(i / rows) * offSet;
         const Model = ALL[key];
         return (
-          <Model name={key} key={key} position={[X, Y, 0]}>
-            <Text
-              color="white"
-              anchorX="center"
-              anchorY="middle"
-              scale={0.35}
-              position-y={-1}
-            >
-              {key}
-            </Text>
-          </Model>
+          <ZoomItem
+            Model={ALL[key]}
+            name={key}
+            key={key}
+            position={[X, Y, 0]}
+          />
         );
       }),
     [ALL]
