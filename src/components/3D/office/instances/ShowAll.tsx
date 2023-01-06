@@ -1,6 +1,7 @@
 import { useInstances } from '.';
-import { Text, Bounds, useBounds } from '@react-three/drei';
-import { useMemo } from 'react';
+import { Text, Bounds, useBounds, useCursor } from '@react-three/drei';
+import { useMemo, useState } from 'react';
+import { motion } from 'framer-motion-3d';
 
 const rows = 15;
 const offSet = 5.5;
@@ -23,9 +24,17 @@ const SelectToZoom = ({ children }) => {
 };
 
 const ZoomItem = ({ Model, name, ...props }) => {
+  const [hovered, set] = useState();
+  useCursor(hovered);
+
   return (
-    <Model {...props}>
-      <Text
+    <motion.group {...props} animate={{ scale: hovered ? 1.2 : 1 }}>
+      <Model
+        onPointerOver={() => set(true)}
+        onPointerOut={() => set(false)}
+        visible={false}
+      />
+      {/* <Text
         color="white"
         anchorX="center"
         anchorY="middle"
@@ -33,8 +42,8 @@ const ZoomItem = ({ Model, name, ...props }) => {
         position-y={-1}
       >
         {name}
-      </Text>
-    </Model>
+      </Text> */}
+    </motion.group>
   );
 };
 
