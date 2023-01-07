@@ -1,7 +1,7 @@
-import { useInstances } from '.';
-import { Text, Bounds, useBounds, useCursor } from '@react-three/drei';
-import { useMemo, useState } from 'react';
-import { motion } from 'framer-motion-3d';
+import { context } from ".";
+import { Text, Bounds, useBounds, useCursor } from "@react-three/drei";
+import { useContext, useMemo, useState } from "react";
+import { motion } from "framer-motion-3d";
 
 const rows = 15;
 const offSet = 5.5;
@@ -30,11 +30,17 @@ const ZoomItem = ({ Model, name, ...props }) => {
   return (
     <motion.group {...props} animate={{ scale: hovered ? 1.2 : 1 }}>
       <Model
-        onPointerOver={() => set(true)}
-        onPointerOut={() => set(false)}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          set(true);
+        }}
+        onPointerOut={(e) => {
+          e.stopPropagation();
+          set(false);
+        }}
         visible={false}
       />
-      {/* <Text
+      <Text
         color="white"
         anchorX="center"
         anchorY="middle"
@@ -42,31 +48,32 @@ const ZoomItem = ({ Model, name, ...props }) => {
         position-y={-1}
       >
         {name}
-      </Text> */}
+      </Text>
     </motion.group>
   );
 };
 
-export const ShowAll = (props: JSX.IntrinsicElements['group']) => {
-  const ALL = useInstances();
-  const Keys = Object.keys(ALL);
+export const ShowAll = (props: JSX.IntrinsicElements["group"]) => {
+  //const ALL = useInstances();
+  const instances = useContext(context);
+  const Keys = Object.keys(instances);
 
   const AllInstances = useMemo(
     () =>
       Keys.map((key, i) => {
         const X = (i % rows) * offSet;
         const Y = Math.floor(i / rows) * offSet;
-        const Model = ALL[key];
+        const Model = instances[key];
         return (
           <ZoomItem
-            Model={ALL[key]}
+            Model={instances[key]}
             name={key}
             key={key}
             position={[X, Y, 0]}
           />
         );
       }),
-    [ALL]
+    [instances]
   );
 
   return (
