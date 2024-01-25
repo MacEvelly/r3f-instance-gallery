@@ -12,6 +12,7 @@ const SelectToZoom = ({ children }) => {
     e.stopPropagation();
     console.log(e.object.name);
     e.delta <= 2 && api.refresh(e.object).fit();
+ 
   };
   const Deselect = (e) => {
     e.button === 0 && api.refresh().fit();
